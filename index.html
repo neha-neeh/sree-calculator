@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Calculator - Instant, error-tolerant, accessible mathematical calculator built for everyday and advanced calculations.">
+  <title>Smart Calculator</title>
+
+  <!-- Google Fonts: Inter for UI, Roboto Mono for numeric display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-viewport">
+    <main class="calculator-container" id="calculator-app">
+      <!-- Calculator Header / Top Bar -->
+      <header class="calculator-header">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">🧮</span>
+          <h1 class="brand-title">Smart Calc</h1>
+        </div>
+        <div class="header-actions">
+          <button type="button" 
+                  id="history-toggle-btn" 
+                  class="icon-btn" 
+                  aria-label="Toggle Calculation History" 
+                  aria-expanded="false" 
+                  aria-controls="history-drawer"
+                  title="History">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 8v4l3 3"></path>
+              <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+            </svg>
+          </button>
+
+          <button type="button" 
+                  id="theme-toggle-btn" 
+                  class="icon-btn" 
+                  aria-label="Toggle Dark and Light Theme" 
+                  title="Switch Theme">
+            <svg class="icon theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="icon theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Status Bar Indicator Row -->
+      <section class="status-bar" aria-label="Calculator Indicators">
+        <div class="indicator-group">
+          <span id="memory-indicator" class="memory-badge hidden" aria-live="polite" title="Memory Holds Value">M</span>
+          <span id="angle-mode" class="badge">DEG</span>
+        </div>
+        <div class="status-message" id="status-message" aria-live="polite">Ready</div>
+      </section>
+
+      <!-- Display Output Area -->
+      <section class="calculator-display" aria-label="Calculator Screen">
+        <div class="secondary-display" id="secondary-display" aria-hidden="true"></div>
+        <div class="primary-display-wrapper">
+          <output class="primary-display" id="primary-display" for="calculator-app">0</output>
+        </div>
+      </section>
+
+      <!-- Button Keypad Grid -->
+      <section class="button-grid-wrapper" aria-label="Keypad">
+        <div class="button-grid" role="grid" aria-label="Calculator buttons">
+          <!-- Row 1: Memory & Utility Functions -->
+          <button type="button" class="btn btn-memory" id="btn-mc" data-action="mc" aria-label="Memory Clear" disabled>MC</button>
+          <button type="button" class="btn btn-memory" id="btn-mr" data-action="mr" aria-label="Memory Recall" disabled>MR</button>
+          <button type="button" class="btn btn-memory" id="btn-mplus" data-action="mplus" aria-label="Memory Add">M+</button>
+          <button type="button" class="btn btn-memory" id="btn-mminus" data-action="mminus" aria-label="Memory Subtract">M-</button>
+          
+          <!-- Row 2: Advanced Functions & Clear -->
+          <button type="button" class="btn btn-clear" id="btn-ac" data-action="ac" aria-label="All Clear">AC</button>
+          <button type="button" class="btn btn-clear" id="btn-c" data-action="c" aria-label="Clear Entry">C</button>
+          <button type="button" class="btn btn-utility" id="btn-backspace" data-action="backspace" aria-label="Backspace">⌫</button>
+          <button type="button" class="btn btn-operator" id="btn-divide" data-action="op" data-value="/" aria-label="Divide">÷</button>
+
+          <!-- Row 3: Math Ops & Digits -->
+          <button type="button" class="btn btn-function" id="btn-sqrt" data-action="sqrt" aria-label="Square Root">√</button>
+          <button type="button" class="btn btn-function" id="btn-power" data-action="op" data-value="^" aria-label="Exponent Power">x^y</button>
+          <button type="button" class="btn btn-function" id="btn-percent" data-action="percent" aria-label="Percent">%</button>
+          <button type="button" class="btn btn-operator" id="btn-multiply" data-action="op" data-value="*" aria-label="Multiply">×</button>
+
+          <!-- Row 4: Digits 7,8,9 & Minus -->
+          <button type="button" class="btn btn-number" id="btn-7" data-action="digit" data-value="7" aria-label="7">7</button>
+          <button type="button" class="btn btn-number" id="btn-8" data-action="digit" data-value="8" aria-label="8">8</button>
+          <button type="button" class="btn btn-number" id="btn-9" data-action="digit" data-value="9" aria-label="9">9</button>
+          <button type="button" class="btn btn-operator" id="btn-subtract" data-action="op" data-value="-" aria-label="Subtract">−</button>
+
+          <!-- Row 5: Digits 4,5,6 & Plus -->
+          <button type="button" class="btn btn-number" id="btn-4" data-action="digit" data-value="4" aria-label="4">4</button>
+          <button type="button" class="btn btn-number" id="btn-5" data-action="digit" data-value="5" aria-label="5">5</button>
+          <button type="button" class="btn btn-number" id="btn-6" data-action="digit" data-value="6" aria-label="6">6</button>
+          <button type="button" class="btn btn-operator" id="btn-add" data-action="op" data-value="+" aria-label="Add">+</button>
+
+          <!-- Row 6: Digits 1,2,3 & Parentheses -->
+          <button type="button" class="btn btn-number" id="btn-1" data-action="digit" data-value="1" aria-label="1">1</button>
+          <button type="button" class="btn btn-number" id="btn-2" data-action="digit" data-value="2" aria-label="2">2</button>
+          <button type="button" class="btn btn-number" id="btn-3" data-action="digit" data-value="3" aria-label="3">3</button>
+          <button type="button" class="btn btn-function" id="btn-parentheses" data-action="parentheses" aria-label="Parentheses">( )</button>
+
+          <!-- Row 7: Sign, 0, Decimal, Equals -->
+          <button type="button" class="btn btn-function" id="btn-negate" data-action="negate" aria-label="Plus or Minus">±</button>
+          <button type="button" class="btn btn-number" id="btn-0" data-action="digit" data-value="0" aria-label="0">0</button>
+          <button type="button" class="btn btn-number" id="btn-decimal" data-action="decimal" data-value="." aria-label="Decimal point">.</button>
+          <button type="button" class="btn btn-equals" id="btn-equals" data-action="equals" aria-label="Equals">=</button>
+        </div>
+      </section>
+
+      <!-- History Drawer Overlay/Panel -->
+      <aside class="history-drawer" id="history-drawer" aria-label="Calculation History" aria-hidden="true">
+        <div class="history-header">
+          <h2>Calculation History</h2>
+          <div class="history-actions">
+            <button type="button" id="clear-history-btn" class="btn-text-danger" aria-label="Clear All History">Clear All</button>
+            <button type="button" id="close-history-btn" class="icon-btn-close" aria-label="Close History Panel">✕</button>
+          </div>
+        </div>
+        <div class="history-body" id="history-list-container">
+          <ul class="history-list" id="history-list" role="list">
+            <li class="history-empty-state">No calculations recorded yet.</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Screen Reader Live Announcements -->
+      <div id="aria-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    </main>
+  </div>
+
+  <!-- Entry Script Bootstrapper -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
